@@ -1,0 +1,46 @@
+﻿<Window x:Class="Encryption.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Encryption"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="400" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <TextBox Name="inputField" Grid.Row="0" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" AcceptsReturn="True"/>
+        <TextBox Name="outputField" Grid.Row="2" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" AcceptsReturn="True"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <ComboBox Grid.Column="0" Name="chooseType" SelectionChanged="ShowOptionalControl" SelectedIndex="0"/>
+            <Grid Grid.Column="1" Name="optionalControlPlace"/>
+            <Button Grid.Column="2" Name="encryptButton" Click="EncryptButton_Click">Szyfruj!</Button>
+            <Button Grid.Column="3" Name="decryptButton" Click="DecryptButton_Click">Deszyfruj!</Button>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Name="print" Click="Print_Click" >Drukuj</Button>
+            <Button Grid.Column="1" Name="addToPrintList" Click="AddToPrint">Dodaj do wydruku</Button>
+            <Button Grid.Column="3" Name="addKey" Click="AddNewKey" Visibility="Hidden">Dadaj nowy klucz</Button>
+        </Grid>
+        
+        
+    </Grid>
+</Window>

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encrypt", "Szyfrator\Encrypt.csproj", "{F8C6DB30-C271-4C96-9822-709C7F1DE30C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8C6DB30-C271-4C96-9822-709C7F1DE30C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8C6DB30-C271-4C96-9822-709C7F1DE30C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8C6DB30-C271-4C96-9822-709C7F1DE30C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8C6DB30-C271-4C96-9822-709C7F1DE30C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {428D831C-4F82-4543-B977-609773CB635C}
+	EndGlobalSection
+EndGlobal
