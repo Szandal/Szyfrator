@@ -16,7 +16,7 @@ using Encrypt;
 using Encrypt.Encrypts;
 using Encrypt.Print;
 using System.Diagnostics;
-
+using Encrypt.ToFile;
 
 namespace Encryption
 {
@@ -26,6 +26,7 @@ namespace Encryption
     public partial class MainWindow : Window
     {
         AddToPrint atp;
+        string fileContent = string.Empty;
         //create every optional controls 
         ComboBox optionalComboBox = new ComboBox();
         private List<string> encryptList;
@@ -123,7 +124,7 @@ namespace Encryption
             optionalComboBox.SelectedIndex = 0;
         }
 
-        public int GetShiftValue(string errorMessage = "Wybierz przesunięcie drogi użytkowniku")
+        private int GetShiftValue(string errorMessage = "Wybierz przesunięcie drogi użytkowniku")
         {
             int shift = 0;
             try
@@ -141,7 +142,16 @@ namespace Encryption
 
         private void EncryptButton_Click(object sender, RoutedEventArgs e)
         {
-            string explicitText = inputField.Text.ToString();
+            string explicitText;
+            if(inputField.IsEnabled == false)
+            {
+                explicitText = fileContent;
+            }
+            else
+            {
+                explicitText = inputField.Text.ToString();
+            }
+            string outText = string.Empty;
             
             switch (chooseType.Text)
             {               
@@ -153,19 +163,19 @@ namespace Encryption
                     {
                         break;
                     }
-                    outputField.Text = cesar.Encryption(explicitText,shift);
+                    outText = cesar.Encryption(explicitText,shift);
                     break;
                 case "Kaczor":
                     Kaczor duck = new Kaczor();
-                    outputField.Text = duck.Encryption(explicitText);
+                    outText = duck.Encryption(explicitText);
                     break;
                 case "Morse'a":
                     Morse morse = new Morse();
-                    outputField.Text = morse.Encryption(explicitText);
+                    outText = morse.Encryption(explicitText);
                     break;
                 case "Liczbowy":
                     Numeric numeric = new Numeric();
-                    outputField.Text = numeric.Encryption(explicitText);
+                    outText = numeric.Encryption(explicitText);
                     break;
                 case "Cyfrowy":
                     Digital digital = new Digital();
@@ -184,7 +194,7 @@ namespace Encryption
                     {
                         break;
                     }
-                    outputField.Text = digital.Encryption(explicitText,shiftDigit,password);
+                    outText = digital.Encryption(explicitText,shiftDigit,password);
                     break;
                 case "Zamiennikowy":
                     Zamiennikowy zamiennikowy = new Zamiennikowy();
@@ -193,15 +203,34 @@ namespace Encryption
                     {
                         break;
                     }
-                    outputField.Text = zamiennikowy.Encryption(explicitText,key);
+                    outText = zamiennikowy.Encryption(explicitText,key);
                     break;
+            }
+            if(inputField.IsEnabled != false)
+            {
+                outputField.Text = outText;
+            }
+            else
+            {
+                EncryptFile encryptFile = new EncryptFile();
+                encryptFile.SaveNewFile(outText);
+                inputField.IsEnabled = true;
+
             }
         }
         
         private void DecryptButton_Click(object sender, RoutedEventArgs e)
         {
-            string inputText = inputField.Text.ToString();
-
+            string inputText;
+            if (inputField.IsEnabled == false)
+            {
+                inputText = fileContent;
+            }
+            else
+            {
+                inputText = inputField.Text.ToString();
+            }
+            string outText = string.Empty;
             switch (chooseType.Text)
             {
                 case "Cezar":
@@ -211,19 +240,19 @@ namespace Encryption
                     {
                         break;
                     }
-                    outputField.Text = cesar.Encryption(inputText, -shift);
+                    outText = cesar.Encryption(inputText, -shift);
                     break;
                 case "Kaczor":
                     Kaczor duck = new Kaczor();
-                    outputField.Text = duck.Decryption(inputText);
+                    outText = duck.Decryption(inputText);
                     break;
                 case "Morse'a":
                     Morse morse = new Morse();
-                    outputField.Text = morse.Decrytption(inputText);
+                    outText = morse.Decrytption(inputText);
                     break;
                 case "Liczbowy":
                     Numeric numeric = new Numeric();
-                    outputField.Text = numeric.Decrytption(inputText);
+                    outText = numeric.Decrytption(inputText);
                     break;
                 case "Cyfrowy":
                     Digital digital = new Digital();
@@ -242,7 +271,7 @@ namespace Encryption
                     {
                         break;
                     }                    
-                    outputField.Text = digital.Decrytption(inputText, GetShiftValue(),password);
+                    outText = digital.Decrytption(inputText, GetShiftValue(),password);
                     break;
                 case "Zamiennikowy":
                     Zamiennikowy zamiennikowy = new Zamiennikowy();
@@ -251,8 +280,19 @@ namespace Encryption
                     {
                         break;
                     }
-                    outputField.Text = zamiennikowy.Encryption(inputText,key);
+                    outText = zamiennikowy.Encryption(inputText,key);
                     break;
+            }
+            if (inputField.IsEnabled != false)
+            {
+                outputField.Text = outText;
+            }
+            else
+            {
+                EncryptFile encryptFile = new EncryptFile();
+                encryptFile.SaveNewFile(outText);
+                inputField.IsEnabled = true;
+
             }
         }
 
@@ -278,6 +318,28 @@ namespace Encryption
             PP.Show();
         }
 
-        
+        private void FromFileText(object sender, RoutedEventArgs e)
+        { 
+            if(fromFile.Content.ToString() == "Anuluj")
+            {
+                inputField.IsEnabled = true;
+                fromFile.Content = "Szyfruj z pliku";
+                inputField.Text = "";
+                return;
+            }
+            else
+            {
+                EncryptFile encryptFile = new EncryptFile();
+                if (encryptFile.OpenFile())
+                {
+                    fromFile.Content = "Anuluj";
+                    inputField.Text = "Szyfrowanie z pliku, wybierz sposób szyfrowania";
+                    inputField.IsEnabled = false;
+                    fileContent = encryptFile.GetFileContent();
+                }
+            }
+
+            
+        }
     }
 }
