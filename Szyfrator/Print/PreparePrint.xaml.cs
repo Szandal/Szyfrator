@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using Microsoft.Win32;
 
-namespace Encrypt.Encrypts
+namespace Encrypt.Print
 {
     /// <summary>
     /// Logika interakcji dla klasy PreparePrint.xaml

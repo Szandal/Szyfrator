@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Encrypt;
 using Encrypt.Encrypts;
+using Encrypt.Print;
 using System.Diagnostics;
 
 

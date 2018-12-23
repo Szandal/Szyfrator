@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Encrypt.Encrypts
+namespace Encrypt.Print
 {
     class AddToPrint
 
