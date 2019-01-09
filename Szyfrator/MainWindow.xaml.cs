@@ -17,6 +17,7 @@ using Encrypt.Encrypts;
 using Encrypt.Print;
 using System.Diagnostics;
 using Encrypt.ToFile;
+using System.IO;
 
 namespace Encryption
 {
@@ -34,10 +35,9 @@ namespace Encryption
         {
             InitializeComponent();
             LoadEncryptToComboBox();
-            //set every optional controls
             optionalControlPlace.Children.Add(optionalComboBox);
             Zamiennikowy zam = new Zamiennikowy();
-            atp = new AddToPrint();
+            atp = new AddToPrint();         
         }
         
 
@@ -142,6 +142,8 @@ namespace Encryption
 
         private void EncryptButton_Click(object sender, RoutedEventArgs e)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             string explicitText;
             if(inputField.IsEnabled == false)
             {
@@ -206,9 +208,10 @@ namespace Encryption
                     outText = zamiennikowy.Encryption(explicitText,key);
                     break;
             }
+            stopwatch.Stop();
             if(inputField.IsEnabled != false)
-            {
-                outputField.Text = outText;
+            {               
+                outputField.Text = outText;                
             }
             else
             {
@@ -217,10 +220,13 @@ namespace Encryption
                 inputField.IsEnabled = true;
 
             }
+            CheckTime(stopwatch, chooseType.Text, "Szyfrowanie");
         }
         
         private void DecryptButton_Click(object sender, RoutedEventArgs e)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             string inputText;
             if (inputField.IsEnabled == false)
             {
@@ -283,6 +289,7 @@ namespace Encryption
                     outText = zamiennikowy.Encryption(inputText,key);
                     break;
             }
+            stopwatch.Stop();
             if (inputField.IsEnabled != false)
             {
                 outputField.Text = outText;
@@ -294,8 +301,12 @@ namespace Encryption
                 inputField.IsEnabled = true;
 
             }
+            CheckTime(stopwatch, chooseType.Text, "Deszyfracja");
         }
-
+        private void CheckTime(Stopwatch stopwatch, string encryptType, string type)
+        {
+            MessageBox.Show(encryptType + " " + type +'\t' + stopwatch.Elapsed.TotalMilliseconds.ToString("0000.0000 ns") + '\t');   
+        }
         private void AddNewKey(object sender, RoutedEventArgs e)
         {
             Zamiennikowy zamiennikowy = new Zamiennikowy();

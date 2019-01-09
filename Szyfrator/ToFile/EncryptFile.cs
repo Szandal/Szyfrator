@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Win32;
-
 namespace Encrypt.ToFile
 {
     class EncryptFile
@@ -26,7 +25,9 @@ namespace Encrypt.ToFile
                 MessageBox.Show("Nie wybrano poprawnego pliku");
                 return false;
             }
-            importFileContent = System.IO.File.ReadAllText(importFileName);
+            Encoding enc = Encoding.GetEncoding("Windows-1250");
+            StreamReader sr = new StreamReader(importFileName, enc);
+            importFileContent = sr.ReadToEnd();
             return true;
         }
         private void OpenDialog()
@@ -47,6 +48,7 @@ namespace Encrypt.ToFile
 
         public void SaveNewFile(string content)
         {
+            byte[] contentToSave = Encoding.UTF8.GetBytes(content);
             SaveFileDialog saveDialog = new SaveFileDialog
             {
                 Filter = "txt files (*.txt)|*.txt",
@@ -58,9 +60,9 @@ namespace Encrypt.ToFile
                 FileStream fs = (FileStream)saveDialog.OpenFile();
                 try
                 {
-                    StreamWriter sw = new StreamWriter(fs);
-                    sw.WriteLine(content);
-                    sw.Close();
+                    //StreamWriter sw = new StreamWriter(fs);
+                    fs.Write(contentToSave, 0, contentToSave.Length);
+                    fs.Close();
 
                 }
                 catch(Exception e)
