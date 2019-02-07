@@ -31,13 +31,27 @@ namespace Encrypt.Encrypts
                 if (Char.IsLetter(letter))
                 {
                     if(Char.IsLower(letter))
-                    {
-                        nonpublicText += Char.ToLower(key.key[latinLowerAlphabet.IndexOf(PolishToLatinLetter(letter))]);
-                       
+                    {                                           
+                        if(latinLowerAlphabet.IndexOf(PolishToLatinLetter(letter)) == -1)
+                        {
+                            nonpublicText += letter;
+                        }
+                        else
+                        {
+                            nonpublicText += Char.ToLower(key.key[latinLowerAlphabet.IndexOf(PolishToLatinLetter(letter))]);
+                        }   
                     }
                     else
                     {
-                        nonpublicText += key.key[latinAlphabet.IndexOf(PolishToLatinLetter(letter))];
+                        if(latinAlphabet.IndexOf(PolishToLatinLetter(letter))==-1)
+                        {
+                            nonpublicText += letter;
+                        }
+                        else
+                        {
+                            nonpublicText += key.key[latinAlphabet.IndexOf(PolishToLatinLetter(letter))];
+                        }
+                        
                     }
                 }
                 else
@@ -66,17 +80,17 @@ namespace Encrypt.Encrypts
             return list;
         }
 
-        protected void CreateNewFile()
+        private void CreateNewFile()
         {
             Directory.CreateDirectory("data");
             using (StreamWriter sw = new StreamWriter(Location))
             {
-                sw.WriteLine("Gadery Poluki"+Separator+"GBCEDFAHKJIUMNPOYSTLWXRZ");
-                sw.WriteLine("Koniec Matury" + Separator + "MBEDCFGHNJOLAIKPYSUTWXRZ");
-                sw.WriteLine("KaCe Minutowy" + Separator + "KBEDCFGHMJALIUTPRSONYXWZ");
-                sw.WriteLine("Malinowe Buty" + Separator + "MUCDWFGHLJKIAONPRSYBEXTZ");
-                sw.WriteLine("Nowe Buty Lisa" + Separator + "SUCDWFGHLJKIMONPRAYBEXTZ");
-                sw.WriteLine("Nasz Hufiec" + Separator + "NBEDCIGUFJKLMAOPRZTHWXYS");
+                sw.WriteLine("Gadery Poluki"+Separator+ GetNewAlphabet("GaderyPoluki".ToUpper()));
+                sw.WriteLine("Koniec Matury" + Separator + GetNewAlphabet("KoniecMatury".ToUpper()));
+                sw.WriteLine("KaCe Minutowy" + Separator + GetNewAlphabet("KaCeMinutowy".ToUpper()));
+                sw.WriteLine("Malinowe Buty" + Separator + GetNewAlphabet("MalinoweButy".ToUpper()));
+                sw.WriteLine("Nowe Buty Lisa" + Separator + GetNewAlphabet("NoweButyLisa".ToUpper()));
+                sw.WriteLine("Nasz Hufiec" + Separator + GetNewAlphabet("NaszHufiec".ToUpper()));
             }
         }
 
@@ -90,7 +104,10 @@ namespace Encrypt.Encrypts
                 newKey = RemoveSpace(newKeyName);
                 newKey = newKey.ToUpper();
                 newKey = PolishToLatinLetter(newKey);
-                ValidateKey(newKey);
+                if (!ValidateKey(newKey))
+                {
+                    return;
+                }
                 newKey = GetNewAlphabet(newKey);
                 File.AppendAllText(Location, newKeyName + Separator + newKey + '\n');
             }
@@ -130,23 +147,24 @@ namespace Encrypt.Encrypts
             return key;
         }
 
-        private void ValidateKey(string key)
+        private bool ValidateKey(string key)
         {
             if (key.Equals(""))
             {
                 AddNewKeyToFile("nie podałeś klucza,\nspróbuj jeszcze raz:");
-                return;
+                return false;
             }
             if ((key.Length % 2) == 1)
             {
                 AddNewKeyToFile("podałeś błędny klucz,\nspróbuj jeszcze raz:");
-                return;
+                return false;
             }
             if (DubbleLetter(key))
             {
                 AddNewKeyToFile("podałeś błędny klucz,\npodwójne wystąpienie litery,\nspróbuj jeszcze raz:");
-                return;
+                return false;
             }
+            return true; 
         }
 
         private bool DubbleLetter(string key)

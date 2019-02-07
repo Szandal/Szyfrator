@@ -12,13 +12,10 @@ namespace Encrypt.Encrypts
 
         public Encrypt()
         {
-            latinAlphabet = "ABCDEFGHIJKLMNOPRSTUWXYZ";
-            polishAlphabet = "AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ";
+            latinAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            polishAlphabet = "AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWXYZŹŻ";
             polishLowerAlphabet = polishAlphabet.ToLower();
-            latinLowerAlphabet = latinAlphabet.ToLower();
-
-            
-
+            latinLowerAlphabet = latinAlphabet.ToLower();            
         }
         public void GetExplicitText(string explicitText)
         {
@@ -27,7 +24,6 @@ namespace Encrypt.Encrypts
 
         protected char PolishToLatinLetter(char letter)
         {
-
             string polishLetters = "ĄĆĘŁŃÓŚŹŻ";
             string latinLetters = "ACELNOSZZ";
             string polishLowerLetters = polishLetters.ToLower();

@@ -13,7 +13,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBlock Name="question" Grid.Column="0"/>
-            <TextBox x:Name="answer" PreviewTextInput="answer_PreviewTextInput" Grid.Column="1"/>
+            <TextBox x:Name="answer" PreviewTextInput="Answer_PreviewTextInput" Grid.Column="1"/>
         </Grid>
         
         <Button Content="OK" Click="OKOn_Click" IsDefault="True" MaxWidth="100" MaxHeight="30" MinWidth="100" MinHeight="30" Margin="0,20,0,0"/>

@@ -9,7 +9,7 @@ namespace Encrypt.Encrypts
 {
     class Kaczor : Encrypt
     {
-        private string key = "ACKORZ";  // IT IS ANAGRAM "KACZOR"
+        private string key = "ACKORZ";  // THIS  IS ANAGRAM "KACZOR"
         private string[] dividedAlphabet;
         public Kaczor()
             : base()
@@ -24,8 +24,7 @@ namespace Encrypt.Encrypts
                 else
                 {
                     dividedAlphabet[i] = polishAlphabet.Substring(polishAlphabet.IndexOf(key[i]), polishAlphabet.Length - polishAlphabet.IndexOf(key[i]));
-                }
-                
+                }                
             }
         }
 
@@ -38,18 +37,17 @@ namespace Encrypt.Encrypts
                 if(char.IsLetter(explicitText[i]))
                 {
                     letter = char.ToUpper(explicitText[i]);
-                    nonpublicText += SearchForSwitch(letter);
+                    nonpublicText += SearchLetterAndNumberForSwitch(letter);
                 }
                 else
                 {
                     nonpublicText += explicitText[i];
-                    continue;
                 }
             }
             return nonpublicText;
         }
 
-        private string SearchForSwitch(char letter)
+        private string SearchLetterAndNumberForSwitch(char letter)
         {
             for(int i = 0; i<key.Length; i++)
             {
@@ -58,7 +56,7 @@ namespace Encrypt.Encrypts
                     return  dividedAlphabet[i][0].ToString()+(dividedAlphabet[i].IndexOf(letter)+1).ToString();
                 }
             }
-            return "Error";
+            return letter + "";
         }
 
         public string Decryption(string nonpublicText)
@@ -109,9 +107,7 @@ namespace Encrypt.Encrypts
             {
                 MessageBox.Show("nie istnieje " + letter + index);
                 return '*';
-            }
-            
-                          
+            }                               
         }
     }
 }

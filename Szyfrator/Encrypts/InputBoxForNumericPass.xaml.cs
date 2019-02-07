@@ -26,7 +26,7 @@ namespace Encrypt
             DialogResult = true;
         }
 
-        private void answer_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void Answer_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !IsTextNumeric(((TextBox)sender).Text + e.Text);
         }

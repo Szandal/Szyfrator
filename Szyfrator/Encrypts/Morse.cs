@@ -14,7 +14,8 @@ namespace Encrypt.Encrypts
         private string[] morsePolishAlphabet = { ".-", ".-.-", "-...", "-.-.", "-.-..", "-..", ".", "..-..", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", ".-..-", "--", "-.", "--.--", "---", "---.", ".--.", ".-.", "...", "...-...", "-", "..-", ".--", "-.--", "--..", "--..-", "--..-." };
         private string[] morseNumbers = { "-----", ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----." };
         private string[] morseSymbols = { "", ".-.-.-", "--..--", "---...", "..--..", "-.-.--" };
-
+        private string latinLetters = "QXV";
+        private string[] morseLatinLetters = { "--.-" , "-..-" , "...-" };
 
         public Morse()
            : base()
@@ -27,11 +28,15 @@ namespace Encrypt.Encrypts
             nonpublicText = "";
             for(int i = 0; i<explicitText.Length; i++)
             {
-
                 letter = Char.ToUpper(explicitText[i]);
                 if (polishAlphabet.Contains(letter))
                 {
                     nonpublicText += morsePolishAlphabet[polishAlphabet.IndexOf(letter)];
+                }
+                else
+                if (latinLetters.Contains(letter))
+                {
+                    nonpublicText += morseLatinLetters[latinLetters.IndexOf(letter)];
                 }
                 else
                 if(numbers.Contains(letter))
@@ -64,6 +69,12 @@ namespace Encrypt.Encrypts
                     index = Array.IndexOf(morsePolishAlphabet,letter);
                     explicitText += polishAlphabet[index];
                 }else
+                if(morseLatinLetters.Contains(letter))
+                {
+                    index = Array.IndexOf(morseLatinLetters, letter);
+                    explicitText += latinLetters[index];
+                }
+                else
                 if(morseNumbers.Contains(letter))
                 {
                     index = Array.IndexOf(morseNumbers, letter);

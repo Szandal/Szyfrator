@@ -87,7 +87,6 @@ namespace Encryption
                     break;
             }
         }
-
         private void AddEncryptsKeysToComboBox()
         {
             optionalComboBox.Items.Clear();
@@ -101,7 +100,6 @@ namespace Encryption
 
             optionalComboBox.SelectedIndex = 0;
         }
-
         private string GetEncryptKeyFromComboBox()
         {
             string keyName = "";
@@ -112,7 +110,6 @@ namespace Encryption
             keyName = optionalComboBox.SelectedValue.ToString();
             return keyName;
         }
-
         private void AddShiftValuesToComboBox(int numberOfShifts)
         {
             optionalComboBox.Items.Clear();
@@ -123,7 +120,6 @@ namespace Encryption
             }
             optionalComboBox.SelectedIndex = 0;
         }
-
         private int GetShiftValue(string errorMessage = "Wybierz przesunięcie drogi użytkowniku")
         {
             int shift = 0;
@@ -137,13 +133,9 @@ namespace Encryption
                 shift = -1;
             }
             return shift;
-        }
-        
-
+        }       
         private void EncryptButton_Click(object sender, RoutedEventArgs e)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
             string explicitText;
             if(inputField.IsEnabled == false)
             {
@@ -186,11 +178,11 @@ namespace Encryption
                     {
                         break;
                     }
-                    string password = "0";
+                    string password;
                     var dialog = new InputBoxForNumericPass("Podaj hasło numeryczne");
                     if (dialog.ShowDialog() == true)
                     {
-                         password = dialog.answer.ToString();
+                        password = dialog.answer.ToString();
                     }
                     else
                     {
@@ -208,25 +200,19 @@ namespace Encryption
                     outText = zamiennikowy.Encryption(explicitText,key);
                     break;
             }
-            stopwatch.Stop();
             if(inputField.IsEnabled != false)
-            {               
-                outputField.Text = outText;                
+            {
+                outputField.Text = outText;                  
             }
             else
             {
                 EncryptFile encryptFile = new EncryptFile();
                 encryptFile.SaveNewFile(outText);
-                inputField.IsEnabled = true;
-
+                SetEnableTextBox();
             }
-            CheckTime(stopwatch, chooseType.Text, "Szyfrowanie");
-        }
-        
+        }        
         private void DecryptButton_Click(object sender, RoutedEventArgs e)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
             string inputText;
             if (inputField.IsEnabled == false)
             {
@@ -267,7 +253,7 @@ namespace Encryption
                     {
                         break;
                     }
-                    string password = "0";
+                    string password;
                     var dialog = new InputBoxForNumericPass("Podaj hasło numeryczne");
                     if (dialog.ShowDialog() == true)
                     {
@@ -276,8 +262,8 @@ namespace Encryption
                     else
                     {
                         break;
-                    }                    
-                    outText = digital.Decrytption(inputText, GetShiftValue(),password);
+                    }
+                    outText = digital.Decryption(inputText, GetShiftValue(),password);
                     break;
                 case "Zamiennikowy":
                     Zamiennikowy zamiennikowy = new Zamiennikowy();
@@ -289,7 +275,6 @@ namespace Encryption
                     outText = zamiennikowy.Encryption(inputText,key);
                     break;
             }
-            stopwatch.Stop();
             if (inputField.IsEnabled != false)
             {
                 outputField.Text = outText;
@@ -298,14 +283,20 @@ namespace Encryption
             {
                 EncryptFile encryptFile = new EncryptFile();
                 encryptFile.SaveNewFile(outText);
-                inputField.IsEnabled = true;
+                SetEnableTextBox();
 
             }
-            CheckTime(stopwatch, chooseType.Text, "Deszyfracja");
+        }
+        private void SetEnableTextBox()
+        {
+            inputField.IsEnabled = true;
+            outputField.IsEnabled = true;
+            fromFile.Content = "Szyfruj z pliku";
+            inputField.Text = "";
         }
         private void CheckTime(Stopwatch stopwatch, string encryptType, string type)
         {
-            MessageBox.Show(encryptType + " " + type +'\t' + stopwatch.Elapsed.TotalMilliseconds.ToString("0000.0000 ns") + '\t');   
+            MessageBox.Show(encryptType + " " + type +'\t' + stopwatch.Elapsed.TotalMilliseconds.ToString("000000.00000 ns") + '\t');   
         }
         private void AddNewKey(object sender, RoutedEventArgs e)
         {
@@ -313,29 +304,22 @@ namespace Encryption
             zamiennikowy.AddNewKeyToFile();
             AddEncryptsKeysToComboBox();
         }
-
-        
-
         private void AddToPrint(object sender, RoutedEventArgs e)
         {
             atp.AddToDictionary(inputField.Text.ToString(), outputField.Text.ToString());
             MessageBox.Show("Dodano do wydruku");
         }
-
         private void Print_Click(object sender, RoutedEventArgs e)
         {
             Debug.WriteLine("Czyta kliknięcie");
             PreparePrint PP = new PreparePrint(atp.GetToPrint());
             PP.Show();
         }
-
         private void FromFileText(object sender, RoutedEventArgs e)
         { 
             if(fromFile.Content.ToString() == "Anuluj")
             {
-                inputField.IsEnabled = true;
-                fromFile.Content = "Szyfruj z pliku";
-                inputField.Text = "";
+                SetEnableTextBox();
                 return;
             }
             else
@@ -346,6 +330,8 @@ namespace Encryption
                     fromFile.Content = "Anuluj";
                     inputField.Text = "Szyfrowanie z pliku, wybierz sposób szyfrowania";
                     inputField.IsEnabled = false;
+                    outputField.Text = "";
+                    outputField.IsEnabled = false;
                     fileContent = encryptFile.GetFileContent();
                 }
             }

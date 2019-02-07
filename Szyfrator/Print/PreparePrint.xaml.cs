@@ -16,7 +16,6 @@ namespace Encrypt.Print
 
     public partial class PreparePrint : Window
     {
-        private const string XpsPath = "data\\printFile.xps";
         private  Grid grid;
         private List<string> list;
         List<CheckBox> checkBoxList;

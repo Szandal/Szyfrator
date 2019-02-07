@@ -60,7 +60,6 @@ namespace Encrypt.ToFile
                 FileStream fs = (FileStream)saveDialog.OpenFile();
                 try
                 {
-                    //StreamWriter sw = new StreamWriter(fs);
                     fs.Write(contentToSave, 0, contentToSave.Length);
                     fs.Close();
 

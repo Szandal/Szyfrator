@@ -9,7 +9,6 @@ namespace Encrypt.Encrypts
 {
     class Cesar : Encrypt
     {
-
         public Cesar() 
             : base()
         {
@@ -40,7 +39,7 @@ namespace Encrypt.Encrypts
 
         private char SwitchLetter(char letter, int shift, string alphabet)
         {
-            if (shift < 0)
+            while(shift < 0)
             {
                 shift = alphabet.Length + shift;
             }

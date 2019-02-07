@@ -14,7 +14,7 @@ namespace Encrypt.Encrypts
             : base()
         { 
         }
-        public string FindNumber(string text)
+        private string GetDigitalFromText(string text)
         {
             string result = "";
             foreach (char letter in text)
@@ -32,9 +32,9 @@ namespace Encrypt.Encrypts
         }
         public string Encryption(string explicitText, int shift, string password = "0")
         {
-            password = FindNumber(password);
+            password = GetDigitalFromText(password);
             nonpublicText = "";
-            int j = 0;
+            
             for(int i=0; i<explicitText.Length; i++)
             {
                 char latinLetter = PolishToLatinLetter(char.ToUpper(explicitText[i]));
@@ -45,10 +45,9 @@ namespace Encrypt.Encrypts
                     {
                         withoutPass += latinAlphabet.Length;
                     }
-                    char p = password[j % password.Length];
-                    Debug.WriteLine(p);
-                    nonpublicText += (withoutPass + int.Parse(p.ToString()));
-                        j++;
+                    char passwordSign = password[i % password.Length];
+                    nonpublicText += (withoutPass + int.Parse(passwordSign.ToString()));
+                    
                 }
                 else
                 {
@@ -58,26 +57,24 @@ namespace Encrypt.Encrypts
             }
             return nonpublicText;
         }
-        public string Decrytption(string nonpublicText,int shift , string password = "0" )
+        public string Decryption(string nonpublicText,int shift , string password = "0" )
         {
-            password = FindNumber(password);
+            password = GetDigitalFromText(password);
             explicitText = "";
-            int j = 0;
             string[] letters = nonpublicText.Split('/');
             for (int i = 0; i<letters.Length; i++)
             {
-                int number;
-                if (Int32.TryParse(letters[i], out number))
+                int numberOfNonpublicLetter;
+                if (Int32.TryParse(letters[i], out numberOfNonpublicLetter))
                 {
-                    number -= (int)Char.GetNumericValue(password[j % password.Length]);
-                    j++;
-                    if (number>latinAlphabet.Length)
+                    numberOfNonpublicLetter -= (int)Char.GetNumericValue(password[i % password.Length]);
+                    while (numberOfNonpublicLetter>latinAlphabet.Length)
                     {
-                        number -= latinAlphabet.Length;
+                        numberOfNonpublicLetter -= latinAlphabet.Length;
                     }
-                    if (number - 1 <= latinAlphabet.Length && number > 0)
+                    if (numberOfNonpublicLetter - 1 <= latinAlphabet.Length && numberOfNonpublicLetter > 0)
                     {
-                        explicitText += latinAlphabet[(number - 1 + shift)%latinAlphabet.Length ];
+                        explicitText += latinAlphabet[(numberOfNonpublicLetter - 1 + shift)%latinAlphabet.Length ];
                         continue;
                     }
                 }
